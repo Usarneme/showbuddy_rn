@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -16,36 +17,33 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Welcome to Show Buddy!</ThemedText>
         <HelloWave />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+      <Link href="#">
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">All my shows</ThemedText>
+          <ThemedText>a carousel of shows goes here...</ThemedText>
+        </ThemedView>
+      </Link>
+      <Link href="upcoming">
+        <ThemedView style={styles.stepContainer}>
+            <ThemedText type="subtitle">My upcoming shows</ThemedText>
+          <ThemedText>a weekly calendar with shows listed in each date is here...</ThemedText>
+        </ThemedView>
+      </Link>
+      <Link href="explore">
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Find New Shows</ThemedText>
+          <ThemedText>a button to take you to the explore new shows page...</ThemedText>
+        </ThemedView>
+      </Link>
+      <Link href="groups">
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">My groups</ThemedText>
+          <ThemedText>a button to take you to your groups settings is here..</ThemedText>
+        </ThemedView>
+      </Link>
     </ParallaxScrollView>
   );
 }

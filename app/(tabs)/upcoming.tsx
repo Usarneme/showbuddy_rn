@@ -5,15 +5,18 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function TabTwoScreen() {
+export default function UpcomingScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore new shows</ThemedText>
+        <ThemedText type="title">My upcoming shows</ThemedText>
       </ThemedView>
-      <ThemedText>TODO: a list of popular shows, curated based on existing interests?</ThemedText>
+      <ThemedText>TODO: a button to switch views from calendar to list</ThemedText>
+      <ThemedText>TODO: a calendar view with upcoming shows in boxes</ThemedText>
+      <ThemedText>TODO: a list view with upcoming shows in date order</ThemedText>
+      <ThemedText>TODO: each list item has a button to take you to details page where you can set which episodes you have/have not seen and set up notifications for this show</ThemedText>
     </ParallaxScrollView>
   );
 }
