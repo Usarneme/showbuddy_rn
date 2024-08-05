@@ -1,26 +1,48 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const get = async (key: string) => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(key);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
 
-// const storeData = async (value) => {
-//   try {
-//     const jsonValue = JSON.stringify(value);
-//     await AsyncStorage.setItem('my-key', jsonValue);
-//   } catch (e) {
-//     // saving error
-//   }
-// };
+const remove = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch(e) {
+    console.error(e);
+    return e;
+  }
 
-// static useAsyncStorage(key: string): {
-//   getItem: (
-//     callback?: ?(error: ?Error, result: string | null) => void,
-//   ) => Promise<string | null>,
-//   setItem: (
-//     value: string,
-//     callback?: ?(error: ?Error) => void,
-//   ) => Promise<null>,
-//   mergeItem: (
-//     value: string,
-//     callback?: ?(error: ?Error) => void,
-//   ) => Promise<null>,
-//   removeItem: (callback?: ?(error: ?Error) => void) => Promise<null>,
-// }
+  // TODO: punch this up, toasts? message/notification handler
+  console.log('Done.');
+  return true;
+};
+
+// TODO: separate interfaces for object/dictionary/key:value ??
+const store = async (key: string, value: any) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
+// AsyncStorage.getAllKeys()
+// AsyncStorage.multiGet([])
+// multiSet([[key, value],[key2, value2]])
+// multiMerge([])
+// multiRemove([])
+// clear()
+
+export {
+  get,
+  remove,
+  store,
+};
