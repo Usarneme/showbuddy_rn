@@ -12,7 +12,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [storage, setStorage] = useState({});
+  const [storage, setStorage] = useState({}); // TODO: add this to a context provider
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -32,7 +32,7 @@ export default function RootLayout() {
   useEffect( () => {
     if (loaded) {
       SplashScreen.hideAsync();
-      console.log("Loaded:", process.env, process.env.EXPO_PUBLIC_ASYNC_STORAGE_KEY);
+      console.log("Loaded:", process.env);
       retrieveData();
     }
   }, [loaded]);
