@@ -5,12 +5,13 @@ import { Button, StyleSheet, TextInput } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Movie } from '@/components/Movie';
 
 interface movie {
   Poster: string;
   Title: string;
   Type: string;
-  Year: string | number;
+  Year: string;
   imdbID: string;
 }
 
@@ -60,7 +61,19 @@ export default function ExploreScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore new shows</ThemedText>
       </ThemedView>
-      {results.length && results.map((r: movie) => <ThemedText key={r.Title+r.Year}>{r.Title} {r.Year}</ThemedText>)}
+      <ThemedView>
+      {results.length && results.map((r: movie) =>(
+          <Movie
+            key={r.Title+r.Year}
+            Poster={r.Poster}
+            Title={r.Title}
+            Type={r.Type}
+            Year={r.Year}
+            imdbID={r.imdbID}
+            showControls={true}
+          />
+        ))}
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
