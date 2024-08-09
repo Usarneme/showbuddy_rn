@@ -10,11 +10,18 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
       key={Type+imdbID}
       style={styles.container}
     >
-      <Image
-        resizeMode='cover'
-        style={styles.posterImage}
-        source={{uri: Poster}}
-      />
+      {Poster.toLowerCase() == "n/a" ?
+        <Image
+          source={require('@/assets/images/partial-react-logo.png')}
+          // TODO: replace source image with a not found/no image provided png or something
+          />
+      :
+        <Image
+          resizeMode='cover'
+          style={styles.posterImage}
+          source={{uri: Poster}}
+        />
+      }
       <ThemedView
         style={styles.content}
       >
