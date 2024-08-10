@@ -2,11 +2,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
+import { Movie } from '@/components/Movie';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Movie } from '@/components/Movie';
 
 interface movie {
   Poster: string;

@@ -2,38 +2,23 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { get } from './../hooks/useAsyncStorage';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [storage, setStorage] = useState({}); // TODO: add this to a context provider
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  const retrieveData = async () => {
-    const key = process.env.EXPO_PUBLIC_ASYNC_STORAGE_KEY;
-    console.log("got key:", key)
-    if (key) {
-      const data = await get(key);
-      setStorage({ key: data });
-    } else {
-      setStorage({ key: {} })
-    }
-  }
-
   useEffect( () => {
     if (loaded) {
       SplashScreen.hideAsync();
-      console.log("Loaded:", process.env);
-      retrieveData();
     }
   }, [loaded]);
 

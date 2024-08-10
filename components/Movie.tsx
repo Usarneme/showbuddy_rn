@@ -4,8 +4,11 @@ import { Image, StyleSheet } from 'react-native';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import useAsyncStorage from '@/hooks/useAsyncStorage';
 
 export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false }: PropsWithChildren & { Poster: string, Title: string, Type: string, Year: string, imdbID: string, showControls: boolean}) {
+  const [storage, setStorage] = useAsyncStorage<string>('showbuddy');
+
   return (
     <ThemedView
       key={Type+imdbID}
