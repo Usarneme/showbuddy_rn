@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
+import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
@@ -29,11 +30,12 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
         <ThemedText type="subtitle">{Year}</ThemedText>
         {showControls &&
           <ThemedView style={styles.controls}>
-            <Pressable
-              onPress={() => "TODO:"}
+            <ThemedPressable
+              onPress={() => console.log("TODO: handle Add to my shows button click", Poster, Title, Type, Year, imdbID)}
+              type='round'
             >
               <ThemedText type="link">Add to my shows</ThemedText>
-            </Pressable>
+            </ThemedPressable>
           </ThemedView>
         }
       </ThemedView>

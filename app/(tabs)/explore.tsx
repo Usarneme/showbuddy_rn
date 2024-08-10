@@ -58,8 +58,9 @@ export default function ExploreScreen() {
         />
       <ThemedPressable
         onPress={() => submitSearch(searchText)}
-        text='Search'
-      />
+      >
+        <ThemedText>Search</ThemedText>
+      </ThemedPressable>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore new shows</ThemedText>

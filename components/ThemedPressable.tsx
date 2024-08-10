@@ -1,25 +1,26 @@
+import { ReactNode } from 'react';
 import { Pressable, type PressableProps, type StyleProp, type ViewStyle, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 
-export type ThemedPressableProps = PressableProps & {
+interface ThemedPressableProps extends PressableProps {
+  children: ReactNode;
   darkColor?: string;
   lightColor?: string;
-  size?: 'default' | 'small' | 'large';
-  // styleOverrides?: 'any';
-  text: string;
-  type?: 'default' | 'round' | 'link';
-  style?: StyleProp<ViewStyle>
-};
+  size?: 'button' | 'small' | 'large';
+  buttonStyle?: StyleProp<ViewStyle>,
+  type?: 'button' | 'round' | 'link';
+  rest?: 'any';
+}
 
 export function ThemedPressable({
+  children,
   darkColor,
   lightColor,
-  size = 'default',
-  style,
-  text,
-  type = 'default',
+  onPress,
+  size = 'button',
+  buttonStyle,
+  type = 'button',
   ...rest
 }: ThemedPressableProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
@@ -27,46 +28,48 @@ export function ThemedPressable({
   return (
     <Pressable
       style={[
-        type === 'default' && styles.default,
+        type === 'button' && styles.button,
         type === 'link' && styles.link,
         type === 'round' && styles.round,
-        style
+        buttonStyle
       ]}
-        {...rest}
+      onPress={onPress}
+      {...rest}
     >
-      <ThemedText
-        style={[
-          { color },
-          type === 'default' && styles.default,
-          type === 'link' && styles.link,
-          type === 'round' && styles.round,
-          style,
-        ]}
-        >{text}</ThemedText>
+      {children}
     </Pressable>
   );
 }
 
+const defaultStyles = {
+  backgroundColor: 'rgba(10, 140, 240, 0.8)',
+  borderRadius: 12,
+  color: '#FFF',
+  fontSize: 16,
+  lineHeight: 24,
+  padding: 10,
+  textAlign: 'center',
+};
+
 const styles = StyleSheet.create({
-  default: {
-    backgroundColor: '#000',
-    borderRadius: 12,
-    color: '#FFF',
-    fontSize: 16,
-    // lineHeight: 24,
-    padding: 10,
-    textAlign: 'center',
+  button: {
+    ...defaultStyles,
   },
   link: {
-    backgroundColor: 'blue',
+    ...defaultStyles,
+    backgroundColor: 'rgba(255,255,255,0.01)',
+    color: 'cyan',
     fontSize: 32,
-    fontWeight: 'bold',
     lineHeight: 32,
+    textDecorationLine: 'underline',
   },
   round: {
-    backgroundColor: 'red',
+    ...defaultStyles,
+    backgroundColor: 'orange',
+    color: 'white',
+    // borderRadius: 50,
     fontSize: 16,
-    lineHeight: 24,
+    // lineHeight: 24,
     fontWeight: '600',
   },
 });
