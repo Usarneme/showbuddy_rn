@@ -2,19 +2,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-import { Movie } from '@/components/Movie';
+import { Movie, IMovie } from '@/components/Movie';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-interface movie {
-  Poster: string;
-  Title: string;
-  Type: string;
-  Year: string;
-  imdbID: string;
-}
 
 export default function ExploreScreen() {
   const [searchText, setSearchText] = useState('robocop');
@@ -24,21 +17,15 @@ export default function ExploreScreen() {
   const submitSearch = async (searchTerm: string) => {
     // TODO: move this into a service
     const url = `https://omdbapi.com/?apiKey=${key}&s=${searchTerm}`;
-    console.log("making fetch. got url:", url)
+    // console.log("making fetch. got url:", url)
     try {
       // TODO: default limit is first 10 results, pagination?
       const response = await fetch(url);
       const json = await response.json();
-      console.log("got results:", json)
+      // console.log("got results:", json)
       if (json.Response === "True") {
         setResults(json.Search);
       }
-      // Poster: "https://m.media-amazon.com/images/M/MV5BZWVlYzU2ZjQtZmNkMi00OTc3LTkwZmYtZDVjNmY4OWFmZGJlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
-      // Title: "RoboCop"
-      // Type: "movie"
-      // Year: "1987"
-      // imdbID: "tt0093870"
-
     } catch (error) {
       console.error(error);
       // TODO: handle this with a toast or something
@@ -66,7 +53,7 @@ export default function ExploreScreen() {
         <ThemedText type="title">Explore new shows</ThemedText>
       </ThemedView>
       <ThemedView>
-      {results.length && results.map((r: movie) =>(
+      {results.length && results.map((r: IMovie) =>(
           <Movie
             key={r.Title+r.Year}
             Poster={r.Poster}
