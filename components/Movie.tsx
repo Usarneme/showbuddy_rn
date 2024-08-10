@@ -23,7 +23,7 @@ interface IMoviesCollection {
 }
 
 interface MovieProps {
-  Poster: string;
+  Poster?: string;
   Title: string;
   Type: string;
   Year: string;
@@ -50,12 +50,15 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
     }
 
     console.log("🚀 ~ handleAddToMyMovies ~ new movie key:", newMovie.imdbID)
+    // const aPromise = fetchMovies(); // ensure all promises are resolved/movies updated before checking against old list
+    // await Promise.resolve(aPromise);
+
     const previousMovieCollectionKeys = Object.keys(moviesCollection.movies);
     console.log("previous movie number and keys:", previousMovieCollectionKeys.length, previousMovieCollectionKeys)
 
-    if (previousMovieCollectionKeys.includes(newMovie.imdbID)) {
-      console.log("duplicate movie selected, not saving...")
-    } else {
+    // if (previousMovieCollectionKeys.includes(newMovie.imdbID)) {
+    //   console.log("duplicate movie selected, not saving...")
+    // } else {
       console.log("new movie detected. saving...")
       const updatedMovies = { ...moviesCollection.movies, [imdbID]: newMovie };
       console.log("🚀 ~ handleAddToMyMovies ~ updatedMovies:", Object.keys(updatedMovies).length, updatedMovies)
@@ -67,19 +70,17 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
       } catch (error) {
         console.error('Error saving movie', error);
       }
-    }
+    // }
 
   }
 
   const fetchMovies = async (): Promise<void> => {
     try {
       const storedValue = await AsyncStorage.getItem('showbuddy');
-
-      if (storedValue) {
-        console.log("fetchMovies. storage value found. setting movies collection...")
-        setMoviesCollection(JSON.parse(storedValue) as IMoviesCollection);
-        console.log("finished setting collection. exiting fetchMovies")
-      }
+      const jsonValue = storedValue != null ? JSON.parse(storedValue) as IMoviesCollection : { movies: {} };
+      console.log("🚀 ~ fetchMovies got something. setting local movies collection to: ~ jsonValue:", jsonValue)
+      setMoviesCollection(jsonValue);
+      console.log("finished setting collection. exiting fetchMovies")
     } catch (error) {
       console.error(error);
     }
@@ -94,7 +95,7 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
       key={Type+imdbID}
       style={styles.container}
     >
-      {Poster.toLowerCase() == "n/a" ?
+      {Poster?.toLowerCase() == "n/a" ?
         <Image
           source={require('@/assets/images/partial-react-logo.png')}
           // TODO: replace source image with a not found/no image provided png or something
