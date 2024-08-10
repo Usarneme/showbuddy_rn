@@ -1,8 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
-import { Button, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Movie } from '@/components/Movie';
@@ -21,7 +22,6 @@ export default function ExploreScreen() {
   const [key, setKey] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
 
   const submitSearch = async (searchTerm: string) => {
-    console.log("making request with key: process.env.EXPO_PUBLIC_OMDB_API_KEY", process.env.EXPO_PUBLIC_OMDB_API_KEY, key)
     // TODO: move this into a service
     const url = `https://omdbapi.com/?apiKey=${key}&s=${searchTerm}`;
     console.log("making fetch. got url:", url)
@@ -56,7 +56,10 @@ export default function ExploreScreen() {
           onChangeText={newText => setSearchText(newText)}
           defaultValue={searchText}
         />
-      <Button onPress={() => submitSearch(searchText)} title='Search' />
+      <ThemedPressable
+        onPress={() => submitSearch(searchText)}
+        text='Search'
+      />
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore new shows</ThemedText>

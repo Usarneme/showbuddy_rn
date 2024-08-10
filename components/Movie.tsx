@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -29,11 +29,11 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
         <ThemedText type="subtitle">{Year}</ThemedText>
         {showControls &&
           <ThemedView style={styles.controls}>
-            <TouchableOpacity
+            <Pressable
               onPress={() => "TODO:"}
             >
               <ThemedText type="link">Add to my shows</ThemedText>
-            </TouchableOpacity>
+            </Pressable>
           </ThemedView>
         }
       </ThemedView>
@@ -44,12 +44,13 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
-    borderColor: 'green',
-    borderWidth: 2,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     flexDirection: 'row',
+    marginBottom: 12,
   },
   content: {
     alignItems: 'flex-start',
+    backgroundColor: 'unset',
     flexDirection: 'column',
     flexShrink: 2,
     gap: 6,
@@ -57,14 +58,15 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   controls: {
-    borderColor: '#000',
+    borderColor: 'gray',
     borderStyle: 'solid',
+    borderRadius: 15,
     borderWidth: 2,
+    padding: 4,
   },
   posterImage: {
-    borderColor: 'red',
-    borderWidth: 2,
-    height: 350,
-    minWidth: '50%',
+    maxWidth: 400,
+    minHeight: 315,
+    minWidth: 200,
   }
 });
