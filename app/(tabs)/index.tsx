@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
@@ -5,10 +6,15 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import useAsyncStorage from '@/hooks/useAsyncStorage';
+// import useAsyncStorage from '@/hooks/useAsyncStorage';
+// import { getItem, setItem, removeItem, clearStorage } from '@/hooks/useAsyncStorage';
+import { useMovies } from '@/hooks/MoviesContext';
 
 export default function HomeScreen() {
-  const [storage, setStorage] = useAsyncStorage<string>('showbuddy');
+  // const [storage, setStorage] = useAsyncStorage<string>('showbuddy');
+  // const [movies, setMovies] = useState({ movies: {} });
+  const { movies } = useMovies();
+  console.log("🚀 ~ HomeScreen ~ movies:", movies)
 
   return (
     <ParallaxScrollView
@@ -27,7 +33,7 @@ export default function HomeScreen() {
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">All my shows</ThemedText>
           <ThemedText>a carousel of shows goes here...</ThemedText>
-          <ThemedText>{storage}</ThemedText>
+          { Object.keys(movies).length && Object.keys(movies).map(imdbID => <ThemedText key={imdbID}>{movies[imdbID].Title}</ThemedText>) }
         </ThemedView>
       </Link>
       <Link href="upcoming">

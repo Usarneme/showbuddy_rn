@@ -1,74 +1,34 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IMoviesCollection } from '@/constants/Types';
 
-export default AsyncStorage;
-// import { useState, useEffect } from 'react';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+const STORAGE_KEY = 'movies';
 
-// const useAsyncStorage = <T>(key: string): [T | null, (value: Partial<T>) => Promise<void>] => {
-//   const [value, setValue] = useState<T | null>(null);
+export const saveMovies = async (movies: IMoviesCollection): Promise<void> => {
+  try {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(movies));
+  } catch (error) {
+    console.error('Error saving movies to storage', error);
+  }
+};
 
-//   const getData = async () => {
-//     try {
-//       const storedValue = await AsyncStorage.getItem(key);
-//       if (storedValue !== null) {
-//         setValue(JSON.parse(storedValue) as T);
-//       }
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   };
+export const getMovies = async (): Promise<IMoviesCollection> => {
+  try {
+    const storedValue = await AsyncStorage.getItem(STORAGE_KEY);
+    console.log("🚀 ~ getMovies ~ storedValue:", storedValue)
+    return storedValue ? JSON.parse(storedValue) : {};
+  } catch (error) {
+    console.error('Error retrieving movies from storage', error);
+    return {};
+  }
+};
 
-//   const setData = async (newValue: Partial<T>) => {
-//     try {
-//       const existingValue = value || ({} as T);
-//       const updatedValue = { ...existingValue, ...newValue } as T;
-//       await AsyncStorage.setItem(key, JSON.stringify(updatedValue));
-//       setValue(updatedValue);
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   };
-
-//   useEffect(() => {
-//     getData();
-//   }, []);
-
-//   return [value, setData];
-// };
-
-// export default useAsyncStorage;
-
-// import { useState, useEffect } from 'react';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// const useAsyncStorage = <T>(key: string): [T | null, (value: T) => Promise<void>] => {
-//   const [value, setValue] = useState<T | null>(null);
-
-//   const getData = async () => {
-//     try {
-//       const storedValue = await AsyncStorage.getItem(key);
-//       if (storedValue !== null) {
-//         setValue(JSON.parse(storedValue) as T);
-//       }
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   };
-
-//   const setData = async (newValue: T) => {
-//     try {
-//       await AsyncStorage.setItem(key, JSON.stringify(newValue));
-//       setValue(newValue);
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   };
-
-//   useEffect(() => {
-//     getData();
-//   }, []);
-
-//   return [value, setData];
-// };
-
-// export default useAsyncStorage;
+export const removeMovie = async (imdbID: string): Promise<void> => {
+  try {
+    const movies = await getMovies();
+    delete movies[imdbID];
+    // const updatedMovies = movies.filter(movie => movie.imdbID !== imdbID);
+    await saveMovies(movies);
+  } catch (error) {
+    console.error('Error removing movie from storage', error);
+  }
+};

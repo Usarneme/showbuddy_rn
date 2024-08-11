@@ -4,36 +4,22 @@ import { Image, StyleSheet } from 'react-native';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-// import useAsyncStorage from '@/hooks/useAsyncStorage';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-import AsyncStorage from '@/hooks/useAsyncStorage';
 
-export interface IMovie {
-  Poster: string;
-  Title: string;
-  Type: string;
-  Year: string;
-  imdbID: string;
-}
+import { IMovie, IMoviesCollection } from '@/constants/Types';
+import { useMovies } from '@/hooks/MoviesContext';
 
-interface IMoviesCollection {
-  movies: {
-    [key: string]: IMovie;
-  }
-}
-
-interface MovieProps {
+export interface MovieProps {
   Poster?: string;
   Title: string;
   Type: string;
   Year: string;
   imdbID: string;
-  showControls?: boolean; // Make showControls optional
+  showControls?: boolean; // showControls is optional
 }
 
 export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false }: PropsWithChildren<MovieProps>) {
-  // const [storage, setStorage] = useAsyncStorage<IMoviesCollection>('showbuddy');
-  const [moviesCollection, setMoviesCollection] = useState<IMoviesCollection>({ movies: {} });
+  const { movies, addMovie } = useMovies();
+  console.log("🚀 ~ Movie ~ movies:", movies)
 
   const handleAddToMyMovies = async () => {
     if (!imdbID || !Poster || !Title || !Type || !Year) {
@@ -47,48 +33,11 @@ export function Movie({ Poster, Title, Type, Year, imdbID, showControls = false 
       Title,
       Type,
       Year,
-    }
+    };
 
-    console.log("🚀 ~ handleAddToMyMovies ~ new movie key:", newMovie.imdbID)
-    // const aPromise = fetchMovies(); // ensure all promises are resolved/movies updated before checking against old list
-    // await Promise.resolve(aPromise);
-
-    const previousMovieCollectionKeys = Object.keys(moviesCollection.movies);
-    console.log("previous movie number and keys:", previousMovieCollectionKeys.length, previousMovieCollectionKeys)
-
-    // if (previousMovieCollectionKeys.includes(newMovie.imdbID)) {
-    //   console.log("duplicate movie selected, not saving...")
-    // } else {
-      console.log("new movie detected. saving...")
-      const updatedMovies = { ...moviesCollection.movies, [imdbID]: newMovie };
-      console.log("🚀 ~ handleAddToMyMovies ~ updatedMovies:", Object.keys(updatedMovies).length, updatedMovies)
-
-      try {
-        await AsyncStorage.setItem('showbuddy', JSON.stringify({ movies: updatedMovies }));
-        console.log("finished saving. calling re-fetch...")
-        await fetchMovies();
-      } catch (error) {
-        console.error('Error saving movie', error);
-      }
-    // }
+    await addMovie(newMovie);
 
   }
-
-  const fetchMovies = async (): Promise<void> => {
-    try {
-      const storedValue = await AsyncStorage.getItem('showbuddy');
-      const jsonValue = storedValue != null ? JSON.parse(storedValue) as IMoviesCollection : { movies: {} };
-      console.log("🚀 ~ fetchMovies got something. setting local movies collection to: ~ jsonValue:", jsonValue)
-      setMoviesCollection(jsonValue);
-      console.log("finished setting collection. exiting fetchMovies")
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
 
   return (
     <ThemedView

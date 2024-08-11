@@ -2,7 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-import { Movie, IMovie } from '@/components/Movie';
+import { IMovie, IMoviesCollection } from '@/constants/Types';
+import { Movie } from '@/components/Movie';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
@@ -12,7 +13,7 @@ import { ThemedView } from '@/components/ThemedView';
 export default function ExploreScreen() {
   const [searchText, setSearchText] = useState('robocop');
   const [results, setResults] = useState([]);
-  const [key, setKey] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
+  const [key, _] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
 
   const submitSearch = async (searchTerm: string) => {
     // TODO: move this into a service
