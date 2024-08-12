@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    // "lib": ["DOM", "DOM.iterable", "ES2022"], //https://stackoverflow.com/questions/50234481/typescript-2-8-3-type-must-have-a-symbol-iterator-method-that-returns-an-iterato
     "strict": true,
     "paths": {
       "@/*": [

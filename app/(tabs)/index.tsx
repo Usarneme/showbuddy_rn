@@ -1,20 +1,41 @@
-import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
+import MoviesCarousel from '@/components/MoviesCarousel';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-// import useAsyncStorage from '@/hooks/useAsyncStorage';
-// import { getItem, setItem, removeItem, clearStorage } from '@/hooks/useAsyncStorage';
+
 import { useMovies } from '@/hooks/MoviesContext';
 
+// const testMoviesAsArray = [
+//   {
+//     "imdbID":"tt0093870",
+//     "Poster":"https://m.media-amazon.com/images/M/MV5BZWVlYzU2ZjQtZmNkMi00OTc3LTkwZmYtZDVjNmY4OWFmZGJlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//     "Title":"RoboCop",
+//     "Type":"movie",
+//     "Year":"1987"
+//   },
+//   {
+//     "imdbID":"tt0111257",
+//     "Poster":"https://m.media-amazon.com/images/M/MV5BYjc0MjYyN2EtZGRhMy00NzJiLWI2Y2QtYzhiYTU3NzAxNzg4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//     "Title":"Speed",
+//     "Type":"movie",
+//     "Year":"1994"
+//   },
+//   {
+//     "imdbID":"tt4993964",
+//     "Poster":"https://m.media-amazon.com/images/M/MV5BMTgwNzU3ZWYtMmQ4Ny00NWNmLTk3ODgtNjJjYzI1NTE4YTUyL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjgwMzE5OTI@._V1_SX300.jpg",
+//     "Title":"Full Speed",
+//     "Type":"movie",
+//     "Year":"2016"
+//   }
+// ];
+
 export default function HomeScreen() {
-  // const [storage, setStorage] = useAsyncStorage<string>('showbuddy');
-  // const [movies, setMovies] = useState({ movies: {} });
   const { movies } = useMovies();
-  console.log("🚀 ~ HomeScreen ~ movies:", movies)
+  const moviesArray = Object.keys(movies).map(id => movies[id]);
 
   return (
     <ParallaxScrollView
@@ -32,8 +53,7 @@ export default function HomeScreen() {
       <Link href="#">
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">All my shows</ThemedText>
-          <ThemedText>a carousel of shows goes here...</ThemedText>
-          { Object.keys(movies).length && Object.keys(movies).map(imdbID => <ThemedText key={imdbID}>{movies[imdbID].Title}</ThemedText>) }
+          <MoviesCarousel movies={moviesArray} />
         </ThemedView>
       </Link>
       <Link href="upcoming">
