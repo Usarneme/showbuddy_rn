@@ -2,7 +2,7 @@ import { Image, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
-import MoviesCarousel from '@/components/MoviesCarousel';
+import { MoviesCarousel } from '@/components/MoviesCarousel';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -35,7 +35,6 @@ import { useMovies } from '@/hooks/MoviesContext';
 
 export default function HomeScreen() {
   const { movies } = useMovies();
-  const moviesArray = Object.keys(movies).map(id => movies[id]);
 
   return (
     <ParallaxScrollView
@@ -53,7 +52,7 @@ export default function HomeScreen() {
       <Link href="#">
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">All my shows</ThemedText>
-          <MoviesCarousel movies={moviesArray} />
+          <MoviesCarousel movies={Object.keys(movies).map(id => movies[id])} />
         </ThemedView>
       </Link>
       <Link href="upcoming">
