@@ -9,30 +9,6 @@ import { ThemedView } from '@/components/ThemedView';
 
 import { useMovies } from '@/hooks/MoviesContext';
 
-// const testMoviesAsArray = [
-//   {
-//     "imdbID":"tt0093870",
-//     "Poster":"https://m.media-amazon.com/images/M/MV5BZWVlYzU2ZjQtZmNkMi00OTc3LTkwZmYtZDVjNmY4OWFmZGJlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-//     "Title":"RoboCop",
-//     "Type":"movie",
-//     "Year":"1987"
-//   },
-//   {
-//     "imdbID":"tt0111257",
-//     "Poster":"https://m.media-amazon.com/images/M/MV5BYjc0MjYyN2EtZGRhMy00NzJiLWI2Y2QtYzhiYTU3NzAxNzg4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-//     "Title":"Speed",
-//     "Type":"movie",
-//     "Year":"1994"
-//   },
-//   {
-//     "imdbID":"tt4993964",
-//     "Poster":"https://m.media-amazon.com/images/M/MV5BMTgwNzU3ZWYtMmQ4Ny00NWNmLTk3ODgtNjJjYzI1NTE4YTUyL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjgwMzE5OTI@._V1_SX300.jpg",
-//     "Title":"Full Speed",
-//     "Type":"movie",
-//     "Year":"2016"
-//   }
-// ];
-
 export default function HomeScreen() {
   const { movies } = useMovies();
 
@@ -49,12 +25,10 @@ export default function HomeScreen() {
         <ThemedText type="title">Welcome to Show Buddy!</ThemedText>
         <HelloWave />
       </ThemedView>
-      <Link href="#">
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">All my shows</ThemedText>
-          <MoviesCarousel movies={Object.keys(movies).map(id => movies[id])} />
-        </ThemedView>
-      </Link>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">All my shows</ThemedText>
+        <MoviesCarousel movies={Object.keys(movies).map(id => movies[id])} />
+      </ThemedView>
       <Link href="upcoming">
         <ThemedView style={styles.stepContainer}>
             <ThemedText type="subtitle">My upcoming shows</ThemedText>

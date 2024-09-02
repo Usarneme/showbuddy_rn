@@ -1,5 +1,6 @@
 // MoviesCarousel.tsx
 import React from 'react';
+import { Link } from 'expo-router';
 import { View, Text, StyleSheet, Dimensions, Image, FlatList } from 'react-native';
 import { IMovie } from '@/constants/Types';
 
@@ -11,10 +12,12 @@ export const MoviesCarousel = ({ movies }: MoviesCarouselProps) => {
   const windowWidth = Dimensions.get('window').width;
 
   const renderItem = ({ item }: { item: IMovie }) => (
-    <View style={styles.slide}>
-      <Image source={{ uri: item.Poster }} style={styles.poster} />
-      <Text style={styles.title}>{item.Title}</Text>
-    </View>
+    <Link href={`details/${item.imdbID}`}>
+      <View style={styles.slide}>
+        <Image source={{ uri: item.Poster }} style={styles.poster} />
+        <Text style={styles.title}>{item.Title}</Text>
+      </View>
+    </Link>
   );
 
   return (

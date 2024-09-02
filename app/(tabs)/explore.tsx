@@ -56,7 +56,7 @@ export default function ExploreScreen() {
       <ThemedView>
       {results.length && results.map((r: IMovie) =>(
           <Movie
-            key={r.Title+r.Year}
+            key={r.imdbID}
             Poster={r.Poster}
             Title={r.Title}
             Type={r.Type}
