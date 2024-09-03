@@ -24,7 +24,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="upcoming"
+        name="(upcoming)"
         options={{
           title: 'Upcoming',
           tabBarIcon: ({ color, focused }) => (
@@ -33,7 +33,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="(explore)"
         options={{
           title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
@@ -42,7 +42,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="groups"
+        name="(groups)"
         options={{
           title: 'Groups',
           tabBarIcon: ({ color, focused }) => (

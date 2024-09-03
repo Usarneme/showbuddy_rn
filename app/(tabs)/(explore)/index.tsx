@@ -37,10 +37,13 @@ export default function ExploreScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">Find new movies and shows</ThemedText>
+      </ThemedView>
       <ThemedView style={{padding: 10}}>
         <TextInput
             style={{height: 40, color: '#FFFFFF', borderColor: '#FFFFFF'}}
-            placeholder="Type here to translate!"
+            placeholder="Enter a show or movie name"
             onChangeText={newText => setSearchText(newText)}
             defaultValue={searchText}
           />
@@ -49,9 +52,6 @@ export default function ExploreScreen() {
         >
           <ThemedText>Search</ThemedText>
         </ThemedPressable>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore new shows</ThemedText>
       </ThemedView>
       <ThemedView>
       {results.length > 0 && results.map((r: IMovie) =>(
