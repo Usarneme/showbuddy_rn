@@ -38,23 +38,23 @@ export default function ExploreScreen() {
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
       <ThemedView style={{padding: 10}}>
-      <TextInput
-          style={{height: 40, color: '#FFFFFF', borderColor: '#FFFFFF'}}
-          placeholder="Type here to translate!"
-          onChangeText={newText => setSearchText(newText)}
-          defaultValue={searchText}
-        />
-      <ThemedPressable
-        onPress={() => submitSearch(searchText)}
-      >
-        <ThemedText>Search</ThemedText>
-      </ThemedPressable>
+        <TextInput
+            style={{height: 40, color: '#FFFFFF', borderColor: '#FFFFFF'}}
+            placeholder="Type here to translate!"
+            onChangeText={newText => setSearchText(newText)}
+            defaultValue={searchText}
+          />
+        <ThemedPressable
+          onPress={() => submitSearch(searchText)}
+        >
+          <ThemedText>Search</ThemedText>
+        </ThemedPressable>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore new shows</ThemedText>
       </ThemedView>
       <ThemedView>
-      {results.length && results.map((r: IMovie) =>(
+      {results.length > 0 && results.map((r: IMovie) =>(
           <Movie
             key={r.imdbID}
             Poster={r.Poster}
