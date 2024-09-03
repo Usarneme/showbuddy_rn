@@ -6,15 +6,25 @@ import { useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-import { useMovies } from '@/hooks/MoviesContext';
+// import { useMovies } from '@/hooks/MoviesContext';
 
-interface Movie {
+interface MovieDetails {
   Poster?: string;
   Title: string;
   Type: string;
   Year: string;
   imdbID: string;
-  // showControls?: boolean; // showControls is optional
+  Actors?: string;
+  BoxOffice?: string | number;
+  Country?: string;
+  Director?: string;
+  Genre?: string;
+  Plot?: string;
+  Rated?: string;
+  Released?: string | Date;
+  Runtime?: string;
+  Writer?: string;
+  imdbRating?: string | number;
 }
 
 export default function DetailsScreen({ route }: { route: { params: { id: number } } }) {
@@ -22,14 +32,36 @@ export default function DetailsScreen({ route }: { route: { params: { id: number
   const params = useLocalSearchParams();
 
   const { id } = params;
-  const movies = useMovies();
-  const [ movie, setMovie ] = useState<Partial<Movie>>({});
+  // const movies = useMovies();
+  const [ movie, setMovie ] = useState<Partial<MovieDetails>>({});
+  const [key, _] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
+
+  // http://www.omdbapi.com/?i=tt6521876
+  const getDetails = async () => {
+    // TODO: something went very wrong... redirect?
+    if (!id) return;
+
+    // TODO: move this into a service
+    const url = `https://omdbapi.com/?apiKey=${key}&i=${id}`;
+    console.log("making fetch. got url:", url)
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      console.log("got results:", json)
+      setMovie(json);
+    } catch (error) {
+      console.error(error);
+      // TODO: handle this with a toast or something
+    }
+  }
 
   useEffect(() => {
-    console.log("use effect in movie show details, id, movies:", id, movies);
-    const thisMovie = Object.values(movies.movies).filter(m => m.imdbID === id)[0];
-    console.log("🚀 ~ useEffect ~ thisMovie:", thisMovie)
-    setMovie(thisMovie);
+    // TODO: cache results
+    // console.log("use effect in movie show details, id, movies:", id, movies);
+    // const thisMovie = Object.values(movies.movies).filter(m => m.imdbID === id)[0];
+    // console.log("🚀 ~ useEffect ~ thisMovie:", thisMovie)
+    // setMovie(thisMovie);
+    getDetails();
   }, []);
 
   return (
@@ -54,6 +86,13 @@ export default function DetailsScreen({ route }: { route: { params: { id: number
       >
         <ThemedText style={styles.text} type="title">{movie.Title}</ThemedText>
         <ThemedText style={styles.text} type="subtitle">{movie.Year}</ThemedText>
+        <ThemedText style={styles.text}>Genre: {movie.Genre}</ThemedText>
+        <ThemedText style={styles.text}>Rated: {movie.Rated}</ThemedText>
+        <ThemedText style={styles.text}>Actors: {movie.Actors}</ThemedText>
+        <ThemedText style={styles.text}>Plot summary: {movie.Plot}</ThemedText>
+        <ThemedText style={styles.text}>Length: {movie.Runtime}</ThemedText>
+        <ThemedText style={styles.text}>Written by: {movie.Writer}</ThemedText>
+        <ThemedText style={styles.text}>Aggregate Rating: {movie.imdbRating}</ThemedText>
         {/* {showControls &&
           <ThemedView style={styles.controls}>
             <ThemedPressable

@@ -11,11 +11,14 @@ import { ThemedView } from '@/components/ThemedView';
 
 
 export default function ExploreScreen() {
-  const [searchText, setSearchText] = useState('robocop');
+  const [searchText, setSearchText] = useState('');
   const [results, setResults] = useState([]);
   const [key, _] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
 
   const submitSearch = async (searchTerm: string) => {
+    // TODO: notify user they haven't typed a search term yet
+    if (!searchTerm) return;
+
     // TODO: move this into a service
     const url = `https://omdbapi.com/?apiKey=${key}&s=${searchTerm}`;
     // console.log("making fetch. got url:", url)
