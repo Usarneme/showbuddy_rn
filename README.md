@@ -48,3 +48,12 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+---
+
+## Attribution
+
+Thanks to the Movie Database for season and episode specifics as well as some use of their image API for posters: https://www.themoviedb.org/about/logos-attribution
+
+*** TODO: Add attribution within the client on a special attribution page. Include TMDB and OMDB logos and links.

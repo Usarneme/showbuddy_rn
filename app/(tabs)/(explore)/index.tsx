@@ -1,40 +1,73 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, TextInput } from 'react-native';
 
 import { IMovie, IMoviesCollection } from '@/constants/Types';
+import { apiService, QueryResult } from '@/services/apiService';
+
 import { Movie } from '@/components/Movie';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedPressable } from '@/components/ThemedPressable';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-
 export default function ExploreScreen() {
-  const [searchText, setSearchText] = useState('');
-  const [results, setResults] = useState([]);
+  const [hasMoreResults, setHasMoreResults] = useState(false);
   const [key, _] = useState(process.env.EXPO_PUBLIC_OMDB_API_KEY);
 
-  const submitSearch = async (searchTerm: string) => {
-    // TODO: notify user they haven't typed a search term yet
-    if (!searchTerm) return;
+  const [page, setPage] =  useState(1);
+  const [results, setResults] = useState<IMovie[]>([]);
+  const [searchText, setSearchText] = useState('');
+  const [totalResults, setTotalResults] = useState<number | string>(0);
+  // const [isUpdated, setIsUpdated] = useState(false);
+  // const hasRun = useRef(false);
 
+  const fetchAndSet = async () => {
+    console.log("🚀 ~ fetchAndSet ~ page", page)
     // TODO: move this into a service
-    const url = `https://omdbapi.com/?apiKey=${key}&s=${searchTerm}`;
-    // console.log("making fetch. got url:", url)
-    try {
-      // TODO: default limit is first 10 results, pagination?
-      const response = await fetch(url);
-      const json = await response.json();
-      // console.log("got results:", json)
-      if (json.Response === "True") {
-        setResults(json.Search);
-      }
-    } catch (error) {
-      console.error(error);
-      // TODO: handle this with a toast or something
-    }
-  }
+    const api = apiService(key);
+    const json = await api.getResults(searchText, page) as QueryResult;
+
+    // TODO: fix this monstrosity, make a real error handler toast
+    if (json instanceof Error) return alert('No data found. Please try again');
+
+    setResults(json.Search);
+    setTotalResults(json.totalResults);
+    if (Number(json.totalResults) > 10) setHasMoreResults(true);
+  };
+
+  const submitSearch = async () => {
+    // TODO: notify user they haven't typed a search term yet
+    if (!searchText) return;
+    return await fetchAndSet();
+  };
+
+  const getNextPageOfResults = async () => {
+    setPage(page + 1);
+    console.log("setting page", page)
+    return await fetchAndSet();
+  };
+
+  const reset = () => {
+    setSearchText('');
+    setResults([]);
+    setPage(1);
+    setTotalResults(0);
+    setHasMoreResults(false);
+  };
+
+  // ensure all async useState invocations complete before moving forward
+  // useEffect(() => {
+  //   if (isUpdated && !hasRun.current) {
+  //     hasRun.current = true;
+  //   }
+  // }, [isUpdated, page]);
+
+  // reset fields when the user navigates away from this tab
+  useFocusEffect(
+    useCallback(() => reset(), [])
+  );
 
   return (
     <ParallaxScrollView
@@ -45,15 +78,18 @@ export default function ExploreScreen() {
       </ThemedView>
       <ThemedView style={{padding: 10}}>
         <TextInput
-            style={{height: 40, color: '#FFFFFF', borderColor: '#FFFFFF'}}
-            placeholder="Enter a show or movie name"
-            onChangeText={newText => setSearchText(newText)}
-            defaultValue={searchText}
-          />
+          style={{height: 40, color: '#FFFFFF', borderColor: '#FFFFFF'}}
+          placeholder="Enter a show or movie name"
+          onChangeText={newText => setSearchText(newText)}
+          defaultValue={searchText}
+        />
         <ThemedPressable
-          onPress={() => submitSearch(searchText)}
+          onPress={submitSearch}
         >
           <ThemedText>Search</ThemedText>
+        </ThemedPressable>
+        <ThemedPressable onPress={reset}>
+          <ThemedText>Reset Search</ThemedText>
         </ThemedPressable>
       </ThemedView>
       <ThemedView>
@@ -68,6 +104,12 @@ export default function ExploreScreen() {
             showControls={true}
           />
         ))}
+        {hasMoreResults &&
+          <ThemedView>
+            <ThemedText>Found {totalResults} matching your search...</ThemedText>
+            <ThemedPressable onPress={getNextPageOfResults}><ThemedText>Get more...</ThemedText></ThemedPressable>
+          </ThemedView>
+        }
       </ThemedView>
     </ParallaxScrollView>
   );
