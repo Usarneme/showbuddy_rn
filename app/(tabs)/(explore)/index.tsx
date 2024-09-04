@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, TextInput } from 'react-native';
 
@@ -20,12 +20,8 @@ export default function ExploreScreen() {
   const [results, setResults] = useState<IMovie[]>([]);
   const [searchText, setSearchText] = useState('');
   const [totalResults, setTotalResults] = useState<number | string>(0);
-  // const [isUpdated, setIsUpdated] = useState(false);
-  // const hasRun = useRef(false);
 
   const fetchAndSet = async () => {
-    console.log("🚀 ~ fetchAndSet ~ page", page)
-    // TODO: move this into a service
     const api = apiService(key);
     const json = await api.getResults(searchText, page) as QueryResult;
 
@@ -45,8 +41,7 @@ export default function ExploreScreen() {
 
   const getNextPageOfResults = async () => {
     setPage(page + 1);
-    console.log("setting page", page)
-    return await fetchAndSet();
+    await fetchAndSet();
   };
 
   const reset = () => {
@@ -56,13 +51,6 @@ export default function ExploreScreen() {
     setTotalResults(0);
     setHasMoreResults(false);
   };
-
-  // ensure all async useState invocations complete before moving forward
-  // useEffect(() => {
-  //   if (isUpdated && !hasRun.current) {
-  //     hasRun.current = true;
-  //   }
-  // }, [isUpdated, page]);
 
   // reset fields when the user navigates away from this tab
   useFocusEffect(
